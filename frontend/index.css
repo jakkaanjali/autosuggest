@@ -5,4 +5,12 @@ h1
 
 #home-intro{
     text-align: center;
+    
+    /*border: 3px;
+    border-color: black;
+    border-style: solid;*/
+
+    border:3px solid blue;
+
+
 }
