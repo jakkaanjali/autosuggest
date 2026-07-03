@@ -17,5 +17,8 @@
   "bugs": {
     "url": "https://github.com/jakkaanjali/autosuggest/issues"
   },
-  "homepage": "https://github.com/jakkaanjali/autosuggest#readme"
+  "homepage": "https://github.com/jakkaanjali/autosuggest#readme",
+  "dependencies": {
+    "express": "^5.2.1"
+  }
 }
