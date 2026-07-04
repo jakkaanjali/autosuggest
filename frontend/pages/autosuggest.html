@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<style
->
+<style>
     body{
         text-align: center;
         background-color: #f0f0f0;
@@ -14,18 +13,51 @@
     }
     h1{
         color: #333;
+        margin-top: 100px;
     }
     p{
         color: #666;
     }
+    .status{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.status i{
+    font-size: 18px;
+    margin-right: 12px;
+    cursor: pointer;
+}
+
+.right{
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+}
     
 </style>
 <body>
+   
+    
+<div class="status">
     <span>&#9881</span>
-    <span>&#x2022; Online | &#x1F552; -ms</span>
+    
+
+    <div class="right">
+        <span>&#x2022;</span>
+        <span>Online | </span>
+        <span>&#x1F552;</span>
+        <span>-ms</span>
+    </div>
+</div>
+    
     
     <h1>BeingInfinity</h1>
-    <p>One Million Phrases. Four Algorithms.Prfix Based Auto Suggest</p>
-    <span> &#128269; <input placeholder="Start typing to search phrases"></span>
+    <p>One Million Phrases. Four Algorithms.Prefix Based Auto Suggest</p>
+    <span> &#128269; <input placeholder="Start typing to search "></span>
+    
 </body>
 </html>
