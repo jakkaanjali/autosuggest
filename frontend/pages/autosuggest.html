@@ -3,61 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>BeingInfinity</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial,sans-serif;
+        }
+
+        body{
+            background:#f5f5f5;
+            text-align:center;
+        }
+
+        /* Top Status Bar */
+        .status{
+            display:flex;
+            justify-content:space-between;
+            align-items:center;
+            padding:18px 30px;
+        }
+
+        .gear{
+            font-size:40px;
+            cursor:pointer;
+        }
+
+        .right{
+            display:flex;
+            align-items:center;
+            gap:10px;
+            font-size:18px;
+        }
+
+        .clock{
+            font-size:30px;
+        }
+
+        /* Logo */
+        h1{
+            margin-top:100px;
+            font-size:50px;
+        }
+
+        .logo-first{
+            color:#1565ff;
+        }
+
+        /* Subtitle */
+        p{
+            margin-top:15px;
+            color:#666;
+            font-size:18px;
+        }
+
+        /* Search Box */
+        .search-box{
+            width:500px;
+            margin:35px auto 0;
+            display:flex;
+            align-items:center;
+            background:white;
+            border:2px solid #ddd;
+            border-radius:35px;
+            padding:14px 20px;
+            box-shadow:0 5px 15px rgba(0,0,0,.12);
+        }
+
+        .search-box:hover{
+            border-color:#1565ff;
+        }
+
+        .search-box:focus-within{
+            border-color:#1565ff;
+            box-shadow:0 5px 18px rgba(21,101,255,.25);
+        }
+
+        .search-icon{
+            font-size:24px;
+            margin-right:12px;
+            color:gray;
+        }
+
+        .search-box input{
+            width:100%;
+            border:none;
+            outline:none;
+            font-size:18px;
+            background:transparent;
+        }
+
+        /* Suggestion Box */
+        #suggestion-box{
+            width:500px;
+            margin:0 auto;
+            background:white;
+            border-radius:0 0 15px 15px;
+            box-shadow:0 5px 15px rgba(0,0,0,.15);
+            text-align:left;
+            overflow:hidden;
+        }
+
+        .suggestion{
+            padding:12px 20px;
+            cursor:pointer;
+            border-bottom:1px solid #eee;
+        }
+
+        .suggestion:last-child{
+            border-bottom:none;
+        }
+
+        .suggestion:hover{
+            background:#f1f5ff;
+        }
+    </style>
 </head>
-<style>
-    body{
-        text-align: center;
-        background-color: #f0f0f0;
-        font-family: Arial, sans-serif;
-    }
-    h1{
-        color: #333;
-        margin-top: 100px;
-    }
-    p{
-        color: #666;
-    }
-    .status{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-}
 
-.status i{
-    font-size: 18px;
-    margin-right: 12px;
-    cursor: pointer;
-}
-
-.right{
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    margin-left: auto;
-}
-    
-</style>
 <body>
-   
-    
-<div class="status">
-    <span>&#9881</span>
-    
 
-    <div class="right">
-        <span>&#x2022;</span>
-        <span>Online | </span>
-        <span>&#x1F552;</span>
-        <span>-ms</span>
+    <!-- Status -->
+    <div class="status">
+
+        <span class="gear">&#9881;</span>
+
+        <div class="right">
+            <span>&#8226;</span>
+            <span>Online |</span>
+            <span class="clock">&#128339;</span>
+            <span>-ms</span>
+        </div>
+
     </div>
-</div>
-    
-    
-    <h1>BeingInfinity</h1>
-    <p>One Million Phrases. Four Algorithms.Prefix Based Auto Suggest</p>
-    <span> &#128269; <input placeholder="Start typing to search "></span>
-    
+
+    <!-- Logo -->
+    <h1>
+        <span class="logo-first">Being</span>Infinity
+    </h1>
+
+    <p>One Million Phrases. Four Algorithms. Prefix Based Auto Suggest.</p>
+
+    <!-- Search -->
+    <div class="search-box">
+        <span class="search-icon">&#128269;</span>
+        <input
+            type="text"
+            id="search-box"
+            placeholder="Start typing to search..."
+        >
+    </div>
+
+    <div id="suggestion-box"></div>
+
+<script>
+
+const searchBox = document.getElementById("search-box");
+const suggestionBox = document.getElementById("suggestion-box");
+
+searchBox.addEventListener("input", function () {
+
+    const userInput = searchBox.value.trim();
+
+    // Clear suggestions if input is empty
+    if (userInput === "") {
+        suggestionBox.innerHTML = "";
+        return;
+    }
+
+    // API URL
+    const url =
+        "https://autosuggest-backend.onrender.com/api/autosuggest?q=" +
+        encodeURIComponent(userInput) +
+        "&algorithm=brute&limit=10&weighted=false";
+
+    // Fetch suggestions
+    fetch(url)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+
+            console.log(data);
+
+            suggestionBox.innerHTML = "";
+
+            const resultsArray = data.results;
+
+            // Create suggestion list
+            resultsArray.forEach(function (result) {
+
+                const div = document.createElement("div");
+                div.className = "suggestion";
+                div.textContent = result.text;
+
+                // Click on suggestion
+                div.addEventListener("click", function () {
+
+                    // Put selected suggestion in search box
+                    searchBox.value = result.text;
+
+                    // Hide suggestions
+                    suggestionBox.innerHTML = "";
+
+                });
+
+                suggestionBox.appendChild(div);
+
+            });
+
+        })
+        .catch(function (error) {
+
+            console.error("Error:", error);
+
+            suggestionBox.innerHTML =
+                "<div class='suggestion'>Unable to load suggestions.</div>";
+
+        });
+
+});
+
+// Hide suggestions when clicking anywhere outside
+document.addEventListener("click", function (event) {
+
+    if (
+        !searchBox.contains(event.target) &&
+        !suggestionBox.contains(event.target)
+    ) {
+        suggestionBox.innerHTML = "";
+    }
+
+});
+
+</script>
+
 </body>
 </html>
